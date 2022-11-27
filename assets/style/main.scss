@@ -1,0 +1,15 @@
+.sticky-top {
+  top: -1px !important;
+}
+.products-section__item {
+  .card {
+    border: none;
+  }
+  .card-body {
+    padding: 1rem 0.5rem;
+    border: none;
+  }
+}
+#section1 {
+  background-repeat: no-repeat;
+}
