@@ -1,3 +1,7 @@
+.cart {
+  background-color: #e5e5e5 !important;
+}
+
 .sticky-top {
   top: -1px !important;
 }
@@ -12,6 +16,14 @@
 
 #section1 {
   background-repeat: no-repeat;
+}
+
+.cart-body__products-item .input-group {
+  width: 100px;
+}
+.cart-body__products-item .input-group input::-webkit-outer-spin-button,
+.cart-body__products-item .input-group input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 }
 
 /*# sourceMappingURL=main.css.map */
