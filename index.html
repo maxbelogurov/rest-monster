@@ -12,7 +12,7 @@
     <header class="py-3 border-bottom">
         <div class="container d-flex flex-wrap justify-content-center">
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                <svg class="bi fs-4 me-2" width="1.5rem" height="1.5rem" fill="success">
+                <svg class="me-2" width="1.5rem" height="1.5rem" fill="success">
                     <use xlink:href="./assets/ico/bootstrap-icons.svg#r-square"/>
                 </svg>
                 <span class="fs-4">Бурге<b>R</b></span>
@@ -46,8 +46,10 @@
         <h3 class="pt-5 mb-4">Бургеры</h3>
         <div class="row products-section">
             <div class="col-3 products-section__item">
-                <div class="card mb-4">
-                    <img src="./assets/img/burger.jpg" class="card-img-top" alt="Бургер">
+                <div class="card mb-4 test">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#ProductModal">
+                        <img src="./assets/img/burger.jpg" class="card-img-top" alt="Бургер">
+                    </a>
                     <div class="card-body">
                         <h5 class="card-title">Говяжая страсть</h5>
                         <p class="card-text">Котлета из говядины, помидоры, лук, сыр чеддер, огурчики, лист салата, кетчуп</p>
@@ -282,43 +284,44 @@
             </div>
         </div>
     </section>
-<footer class="bg-dark text-white mt-5">
-    <div class="container py-5">
-        <div class="row justify-content-between">
-            <div class="col-12 col-md-3 mb-3">
-                <h5>Бурге<b>R</b></h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">О нас</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Контакты</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Режим работы</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
-                </ul>
+
+    <footer class="bg-dark text-white mt-5">
+        <div class="container py-5">
+            <div class="row justify-content-between">
+                <div class="col-12 col-md-3 mb-3">
+                    <h5>Бурге<b>R</b></h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">О нас</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Контакты</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Режим работы</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-12 col-md-4 mb-3">
+                    <h5>Доставка</h5>
+                    <span class="fs-4">529 ₽</span>
+                    <p>Минимальная сумма доставки</p>
+                    <span class="fs-4">7 000 ₽</span>
+                    <p>Максимальная сумма при оплате наличными</p>
+                </div>
+
+                <div class="col-12 col-md-5 mb-3">
+                    <h5>Примечания</h5>
+                    <p>Все цены в меню указаны без учета скидок.</p>
+                    <p>Изображения продуктов могут отличаться от продуктов в заказе.</p>
+                    <p>Иная информация для клиентов</p>
+                </div>
+
             </div>
 
-            <div class="col-12 col-md-4 mb-3">
-                <h5>Доставка</h5>
-                <span class="fs-4">529 ₽</span>
-                <p>Минимальная сумма доставки</p>
-                <span class="fs-4">7 000 ₽</span>
-                <p>Максимальная сумма при оплате наличными</p>
+            <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+                <p>© 2022 Бурге<b>R</b></p>
+                <p>Сайт разработан на платформе <a href="#">Restmonster.ru</a></p>
             </div>
-
-            <div class="col-12 col-md-5 mb-3">
-                <h5>Примечания</h5>
-                <p>Все цены в меню указаны без учета скидок.</p>
-                <p>Изображения продуктов могут отличаться от продуктов в заказе.</p>
-                <p>Иная информация для клиентов</p>
-            </div>
-
         </div>
-
-        <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
-            <p>© 2022 Бурге<b>R</b></p>
-            <p>Сайт разработан на платформе <a href="#">Restmonster.ru</a></p>
-        </div>
-    </div>
-</footer>
+    </footer>
 
 <!--    Login Modal-->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -340,6 +343,44 @@
                         </div>
                         <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Войти</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--    Product Modal-->
+    <div class="modal fade" id="ProductModal" tabindex="-1" aria-labelledby="ProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content rounded-4 shadow">
+                <div class="modal-header p-3 border-bottom-0">
+                    <h4 class="fw-bold mb-0 fs-2">Говяжая страсть</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3 pt-0 d-flex flex-row gap-4">
+                    <div>
+                        <img src="./assets/img/burger.jpg" class="card-img-top" alt="Бургер">
+                    </div>
+                    <div>
+                        <p class="text">Котлета из говядины, помидоры, лук, сыр чеддер, огурчики, лист салата, кетчуп</p>
+                        <p class="small text-secondary">430 г.</p>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                <label class="form-check-label" for="inlineRadio1">Большой</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" checked>
+                                <label class="form-check-label" for="inlineRadio2">Малый</label>
+                            </div>
+                        </div>
+                        <p class="fs-3 mt-4">390 р.</p>
+                        <button class="btn btn-primary mb-4 mx-auto">
+                            <svg class="me-2" width="1.3rem" height="1.3rem" fill="white">
+                                <use xlink:href="./assets/ico/bootstrap-icons.svg#basket"/>
+                            </svg>
+                            Добавить в корзину</button>
+                    </div>
+
                 </div>
             </div>
         </div>

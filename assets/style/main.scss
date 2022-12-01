@@ -5,12 +5,19 @@
   top: -1px !important;
 }
 .products-section__item {
+  .test:hover > .card-body {
+    background-color: #d3ddea;
+  }
   .card {
     border: none;
+
   }
   .card-body {
     padding: 1rem 0.5rem;
     border: none;
+    transition: .3s;
+    border-bottom-left-radius: var(--bs-card-inner-border-radius);
+    border-bottom-right-radius: var(--bs-card-inner-border-radius);
   }
 }
 #section1 {
