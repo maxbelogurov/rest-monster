@@ -10,35 +10,55 @@
 </head>
 <body>
     <header class="py-3 border-bottom">
-        <div class="container d-flex flex-wrap justify-content-center">
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center">
+            <a href="/" class="d-flex align-items-center me-md-auto text-dark text-decoration-none">
                 <svg class="me-2" width="1.5rem" height="1.5rem" fill="success">
                     <use xlink:href="./assets/ico/bootstrap-icons.svg#r-square"/>
                 </svg>
                 <span class="fs-4">Бурге<b>R</b></span>
             </a>
-            <div class="col-md-3 text-end">
-                <a  href="./profile.html" class="btn btn-outline-secondary btn-sm me-4">Profile</a>
-                <button type="button" class="btn btn-outline-secondary btn-sm me-4" data-bs-toggle="modal" data-bs-target="#OrderModal">Order</button>
-                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Войти</button>
+            <div class="text-end">
+                <a  href="./profile.html" class="btn btn-outline-secondary btn-sm me-md-4">Profile</a>
+                <button type="button" class="btn btn-outline-secondary btn-sm me-md-4" data-bs-toggle="modal" data-bs-target="#OrderModal">Order</button>
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <span class="d-inline d-md-none">
+                         <svg class="me-1" width="1.3rem" height="1.3rem">
+                             <use xlink:href="./assets/ico/bootstrap-icons.svg#box-arrow-in-right"/>
+                         </svg>
+                    </span>
+                    <span class="d-none d-md-inline">Войти</span>
+
+                </button>
             </div>
         </div>
     </header>
-    <nav class="py-2 bg-light border-bottom mb-4 sticky-top">
-        <div class="container d-flex flex-wrap">
-            <ul class="nav me-auto">
-                <li class="nav-item"><a href="#section1" class="nav-link link-dark px-2 active" aria-current="page">Бургеры</a></li>
-                <li class="nav-item"><a href="#section2" class="nav-link link-dark px-2">Шаверма</a></li>
-                <li class="nav-item"><a href="#section3" class="nav-link link-dark px-2">Напитки</a></li>
-                <li class="nav-item"><a href="#section4" class="nav-link link-dark px-2">Десерты</a></li>
-            </ul>
-            <div class="col-md-3 text-end">
+    <nav class="navbar navbar-expand-md py-2 bg-light border-bottom mb-4 sticky-top">
+        <div class="container d-flex flex-wrap align-items-start">
+            <div>
+                <button class="navbar-toggler btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#navbarProductCategory" aria-controls="navbarProductCategory" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarProductCategory">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a href="#section1" class="nav-link link-dark px-2 active" aria-current="page">Бургеры</a></li>
+                        <li class="nav-item"><a href="#section2" class="nav-link link-dark px-2">Шаверма</a></li>
+                        <li class="nav-item"><a href="#section3" class="nav-link link-dark px-2">Напитки</a></li>
+                        <li class="nav-item"><a href="#section4" class="nav-link link-dark px-2">Десерты</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-end">
                 <button type="button"
                         class="btn btn-outline-secondary"
                         data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasCart"
                         aria-controls="offcanvasCart">
-                    Корзина
+                    <span class="d-inline d-md-none">
+                         <svg class="me-2" width="1.5rem" height="1.5rem" fill="success">
+                             <use xlink:href="./assets/ico/bootstrap-icons.svg#cart"/>
+                         </svg>
+                    </span>
+                    <span class="d-none d-md-inline">Корзина</span>
                     <span class="badge text-bg-secondary">3</span>
                 </button>
             </div>
@@ -47,7 +67,7 @@
     <section class="container pt-2" id="section1">
         <h3 class="pt-5 mb-4">Бургеры</h3>
         <div class="row products-section">
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4 test">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#ProductModal">
                         <img src="./assets/img/burger.jpg" class="card-img-top" alt="Бургер">
@@ -56,72 +76,72 @@
                         <h5 class="card-title">Говяжая страсть</h5>
                         <p class="card-text">Котлета из говядины, помидоры, лук, сыр чеддер, огурчики, лист салата, кетчуп</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">390 р.</span>
+                            <span class="fs-6 text-primary text-primary">390 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/burger.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Говяжая страсть</h5>
                         <p class="card-text">Котлета из говядины, помидоры, лук, сыр чеддер, огурчики, лист салата, кетчуп</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">390 р.</span>
+                            <span class="fs-6 text-primary">390 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/burger.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Говяжая страсть</h5>
                         <p class="card-text">Котлета из говядины, помидоры, лук, сыр чеддер, огурчики, лист салата, кетчуп</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">390 р.</span>
+                            <span class="fs-6 text-primary">390 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/burger.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Говяжая страсть</h5>
                         <p class="card-text">Котлета из говядины, помидоры, лук, сыр чеддер, огурчики, лист салата, кетчуп</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">390 р.</span>
+                            <span class="fs-6 text-primary">390 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/burger.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Говяжая страсть</h5>
                         <p class="card-text">Котлета из говядины, помидоры, лук, сыр чеддер, огурчики, лист салата, кетчуп</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">390 р.</span>
+                            <span class="fs-6 text-primary">390 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/burger.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Говяжая страсть</h5>
                         <p class="card-text">Котлета из говядины, помидоры, лук, сыр чеддер, огурчики, лист салата, кетчуп</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">390 р.</span>
+                            <span class="fs-6 text-primary">390 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
@@ -133,53 +153,53 @@
     <section class="container pt-2" id="section2">
         <h3 class="pt-5 mb-4">Шаверма</h3>
         <div class="row products-section">
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/shaverma.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Шаверма куриная</h5>
                         <p class="card-text">Курица, помидоры, лук, фри, огурчики, капуста, фирменный соус</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">190 р.</span>
+                            <span class="fs-6 text-primary">190 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/shaverma.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Шаверма куриная</h5>
                         <p class="card-text">Курица, помидоры, лук, фри, огурчики, капуста, фирменный соус</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">190 р.</span>
+                            <span class="fs-6 text-primary">190 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/shaverma.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Шаверма куриная</h5>
                         <p class="card-text">Курица, помидоры, лук, фри, огурчики, капуста, фирменный соус</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">190 р.</span>
+                            <span class="fs-6 text-primary">190 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/shaverma.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Шаверма куриная</h5>
                         <p class="card-text">Курица, помидоры, лук, фри, огурчики, капуста, фирменный соус</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">190 р.</span>
+                            <span class="fs-6 text-primary">190 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
@@ -191,49 +211,49 @@
     <section class="container pt-2" id="section3">
         <h3 class="pt-5 mb-4">Напитки</h3>
         <div class="row products-section">
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/cola.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Coca Cola</h5>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">105 р.</span>
+                            <span class="fs-6 text-primary">105 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/cola.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Coca Cola</h5>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">105 р.</span>
+                            <span class="fs-6 text-primary">105 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/cola.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Coca Cola</h5>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">105 р.</span>
+                            <span class="fs-6 text-primary">105 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/cola.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Coca Cola</h5>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">105 р.</span>
+                            <span class="fs-6 text-primary">105 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
@@ -245,40 +265,40 @@
     <section class="container pt-2" id="section4">
         <h3 class="pt-5 mb-4">Десерты</h3>
         <div class="row products-section">
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/cheesecake.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Чизкейк</h5>
                         <p class="card-text">Нежнейший творожный чизкейк</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">147 р.</span>
+                            <span class="fs-6 text-primary">147 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/cheesecake.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Чизкейк</h5>
                         <p class="card-text">Нежнейший творожный чизкейк</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">147 р.</span>
+                            <span class="fs-6 text-primary">147 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-3 products-section__item">
+            <div class="col-6 col-md-4 col-lg-3 products-section__item">
                 <div class="card mb-4">
                     <img src="./assets/img/cheesecake.jpg" class="card-img-top" alt="Бургер">
                     <div class="card-body">
                         <h5 class="card-title">Чизкейк</h5>
                         <p class="card-text">Нежнейший творожный чизкейк</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="fs-5">147 р.</span>
+                            <span class="fs-6 text-primary">147 р.</span>
                             <a href="#" class="btn btn-primary">Выбрать</a>
                         </div>
                     </div>
@@ -290,7 +310,7 @@
     <footer class="bg-dark text-white mt-5">
         <div class="container py-5">
             <div class="row justify-content-between">
-                <div class="col-12 col-md-3 mb-3">
+                <div class="col-6 col-md-3 mb-3">
                     <h5>Бурге<b>R</b></h5>
                     <ul class="nav flex-column">
                         <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">О нас</a></li>
@@ -301,7 +321,7 @@
                     </ul>
                 </div>
 
-                <div class="col-12 col-md-4 mb-3">
+                <div class="col-6 col-md-4 mb-3">
                     <h5>Доставка</h5>
                     <span class="fs-4">529 ₽</span>
                     <p>Минимальная сумма доставки</p>
@@ -318,7 +338,7 @@
 
             </div>
 
-            <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+            <div class="d-flex flex-column flex-sm-row justify-content-between pt-4 mt-4 border-top">
                 <p>© 2022 Бурге<b>R</b></p>
                 <p>Сайт разработан на платформе <a href="#">Restmonster.ru</a></p>
             </div>
@@ -358,11 +378,11 @@
                     <h4 class="fw-bold mb-0 fs-2">Говяжая страсть</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-3 pt-0 d-flex flex-row gap-4">
-                    <div>
+                <div class="modal-body p-3 pt-0 d-flex flex-lg-row flex-column gap-4">
+                    <div class="">
                         <img src="./assets/img/burger.jpg" class="card-img-top" alt="Бургер">
                     </div>
-                    <div>
+                    <div class="">
                         <p class="text">Котлета из говядины, помидоры, лук, сыр чеддер, огурчики, лист салата, кетчуп</p>
                         <p class="small text-secondary">430 г.</p>
                         <div>
@@ -378,7 +398,7 @@
                         <p class="fs-3 mt-4">390 р.</p>
                         <button class="btn btn-primary mb-4 mx-auto">
                             <svg class="me-2" width="1.3rem" height="1.3rem" fill="white">
-                                <use xlink:href="./assets/ico/bootstrap-icons.svg#basket"/>
+                                <use xlink:href="./assets/ico/bootstrap-icons.svg#cart"/>
                             </svg>
                             Добавить в корзину</button>
                     </div>

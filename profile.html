@@ -44,8 +44,8 @@
   </div>
 </nav>
 <section class="container">
-  <div class="row pt-3">
-    <div class="col-4">
+  <div class="row">
+    <div class="col-12 col-md-4 pt-5">
       <h3 class="mb-3">Личные данные</h3>
       <div class="mb-3">
         <label for="firstName" class="form-label">Имя</label>
@@ -63,7 +63,7 @@
         <div class="invalid-feedback">Укажите адрес эл. почты</div>
       </div>
     </div>
-    <div class="col-6 offset-2">
+    <div class="col-12 col-md-6 offset-md-2 pt-5">
       <h3 class="mb-3">Адрес доставки</h3>
       <div>
         <label for="adress" class="form-label">Адрес доставки</label>
@@ -82,10 +82,11 @@
         </div>
       </div>
     </div>
-    <div class="col-6 pt-5">
+    <div class="col-12 col-md-6 pt-5">
       <h3 class="mb-3">История заказов</h3>
-      <table class="table">
-        <thead>
+      <div class="table-responsive-md">
+        <table class="table">
+        <thead class="table-light">
         <tr>
           <th scope="col">№</th>
           <th scope="col">Время заказа</th>
@@ -114,6 +115,7 @@
         </tr>
         </tbody>
       </table>
+      </div>
     </div>
   </div>
 
