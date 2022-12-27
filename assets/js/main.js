@@ -1,4 +1,4 @@
 function startOrder() {
-    $('#offcanvasCart').offcanvas('hide');
-    $('#OrderModal').modal('show');
+    const offcanvasCart = new bootstrap.Offcanvas(document.querySelector('#offcanvasCart'));
+    offcanvasCart.hide()
 }

@@ -1,9 +1,10 @@
 <template>
   <div>
     <my-header v-bind:title="restTitle"></my-header>
-    <my-nav v-bind:category="categorySequence"
+    <my-nav v-bind:category="categoryActual"
             v-bind:cartCount="cartItemsCount"></my-nav>
-    <section v-for="value in categorySequence"
+    <my-notifications ref="notification"></my-notifications>
+    <section v-for="value in categoryActual"
              :key="value.name"
              v-bind:id="value"
              class="container pt-2">
@@ -13,16 +14,14 @@
                :key="product.id"
             class="col-6 col-md-4 col-lg-3 products-section__item">
             <div class="card mb-4">
-<!--              <a href="#" data-bs-toggle="modal" data-bs-target="#ProductModal">-->
                 <img v-on:click="openProductModal(product.id)" src="/static/img/placeholder.jpg" class="card-img-top" v-bind:alt="product.title">
-<!--              </a>-->
               <div class="card-body rounded-bottom">
                 <h5 class="card-title">{{ product.title }}</h5>
-                <p class="card-text">{{ product.description }}</p>
+                <p class="card-text description">{{ product.description | shortProductDescription }}</p>
                 <div class="d-flex justify-content-between align-items-center">
-                  <span class="fs-6 text-primary text-primary">{{ product.price }}</span>
-                  <button v-on:click="addProductInCart(product.id)"
-                     class="btn btn-primary">Выбрать</button>
+                  <span class="fs-6 text-primary text-primary">{{ product.price }} р.</span>
+                  <button v-on:click="addProductInCart(product.id, product.price)"
+                     class="btn btn-primary">Добавить</button>
                 </div>
               </div>
             </div>
@@ -30,11 +29,20 @@
         </div>
     </section>
     <my-product-modal
-      v-on:test-method="testMethod"
-      v-bind:product="productModal"
+      v-on:add-prod-in-cart="addProductInCart"
+      v-bind:product="productModal"></my-product-modal>
+    <my-cart-modal
+      v-on:change-prod-in-cart="changeCountProductInCart"
+      v-on:remove-product-in-cart="removeProductInCart"
       v-bind:cart="cart"
-      v-bind:cartItemsCount="cartItemsCount"></my-product-modal>
-    <my-cart-modal></my-cart-modal>
+      v-bind:products="products"
+      v-bind:cartItemsCount="cartItemsCount"></my-cart-modal>
+    <my-order-modal
+      v-on:clearCart="clearCart"
+      v-bind:cart="cart"
+      v-bind:cartItemsCount="cartItemsCount"
+      v-bind:serverSetting="serverSetting">
+    </my-order-modal>
   </div>
 </template>
 
@@ -43,24 +51,34 @@ import MyHeader from './Header'
 import MyNav from './Nav'
 import MyProductModal from './modal/ProductModal'
 import MyCartModal from './modal/CartModal'
-const servUrl = 'http://127.0.0.1:8000'
-var userToken = '13303309-d941-486f-b600-3e90929ac50f'
-var restId = '3a1e6dc1-465f-4c8e-b9a5-a94de93a60c9';
+import MyOrderModal from './modal/OrderModal'
+import MyNotifications from './addons/Notifications'
+import * as serv from '../assets/js/main'
+let servUrl = serv.settings.servUrl
+let userToken = serv.settings.userToken;
+let restId = serv.settings.restId;
 export default {
   name: "Products",
   data() {
     return {
       restTitle: 'test',
       categorySequence: {},
+      categoryActual: {},
       products: [],
       productModal: {},
-      cart: [],
+      cart: {},
       cartItemsCount: 0,
+      restaurant: {},
+      serverSetting: {
+        url: serv.settings.servUrl,
+        userId: serv.settings.userToken,
+        restId: serv.settings.restId
+      }
     }
   },
-  components: { MyHeader, MyNav, MyProductModal, MyCartModal },
+  components: { MyHeader, MyNav, MyProductModal, MyCartModal, MyOrderModal, MyNotifications },
   created() {
-    //:TODO get restaurant and menu data
+    //TODO: get restaurant and menu data
     Promise.all([
       axios.get(servUrl + '/restaurants/' + restId),
       axios.get(servUrl + '/menu-items/' + restId)
@@ -69,10 +87,11 @@ export default {
       menu
     ]) => {
       this.restTitle = restaurant.data.title;
+      this.restaurant = restaurant.data;
       this.categorySequence = restaurant.data.settings.category_sequence;
       this.products = menu.data;
     })
-    //:TODO loading cart from Local Storage
+    //TODO: loading cart from Local Storage
     if (localStorage.userCart) {
       this.cart = JSON.parse(localStorage.userCart)
     }
@@ -81,57 +100,100 @@ export default {
     //TODO: display products in their categories
     productsInCategory(category) {
       return this.products.filter(function (prod) {
-        return prod.category === category && !prod.archived
+        return prod.category === category && prod.is_available
       })
     },
 
     //TODO: open product in modal window
     openProductModal(id) {
       let prodModalNow;
+      let bsProductModal = new bootstrap.Modal(document.querySelector('#ProductModal'))
       this.products.forEach(function (item) {
         if (item.id === id) { prodModalNow = item }
       })
       this.productModal = prodModalNow;
-      $('#ProductModal').modal('show');
+      bsProductModal.show();
     },
 
     //TODO: add product id and count in Cart
-    addProductInCart(prod, count = 1) {
+    addProductInCart(prod, price, count = 1) {
       let itemAdded = false;
-      this.cart.forEach( function (item) {
-        if (item.id === prod) {
-          item.count += count;
+      for (let key in this.cart) {
+        if(key === prod) {
+          this.cart[key].qty += count
           itemAdded = true;
         }
-      })
+      }
       if (!itemAdded) {
-        this.cart.push({id: prod, count: count})
+        let newObj = {id: prod, qty: count, price: price};
+        this.$set(this.cart, prod, newObj)
+      }
+      localStorage.userCart = JSON.stringify(this.cart);
+
+      //TODO: notification this product
+      for (let key in this.products) {
+        if(this.products[key].id === prod) {
+          this.notification(this.products[key].title)
+        }
+      }
+    },
+    notification(message) {
+      this.$refs.notification.sendNotification(message);
+    },
+    //TODO: change product count in Cart
+    changeCountProductInCart(prodId, count) {
+      if(this.cart[prodId].qty === 1 && count === -1) {
+        this.cart[prodId].qty = 1
+      } else {
+        this.cart[prodId].qty += count
       }
       localStorage.userCart = JSON.stringify(this.cart);
     },
-    //TODO: test method
-    testMethod(id) {
-      console.log(id)
+
+    //TODO: remove product in Cart
+    removeProductInCart(id) {
+      this.$delete(this.cart, id)
+      localStorage.userCart = JSON.stringify(this.cart);
+    },
+    //TODO: clear Cart
+    clearCart() {
+      for (let key in this.cart) {
+        delete this.cart[key]
+      }
+      this.cartItemsCount = 0;
+      localStorage.removeItem('userCart');
     }
   },
-
-  computed: {
-    updateCart() {
-
+  filters: {
+    shortProductDescription(elem) {
+      let str = elem
+      if (str.length > 100) {
+        str = elem.slice(0, 100) + '...';
+      }
+      return str;
     }
   },
-
   watch: {
-    //TODO: count all items in cart
     cart: {
+      //TODO: count all items in cart
       handler() {
-        let itemsFromlocalStorage = JSON.parse(localStorage.userCart)
-        this.cartItemsCount = itemsFromlocalStorage.reduce( function (sum, current) {
-          return sum + current.count
-        }, 0)
+        let items = JSON.parse(localStorage.userCart)
+        let countCart = 0
+        for(let key in items) {
+          countCart += items[key].qty
+        }
+        this.cartItemsCount = countCart
       },
       deep: true
-    }
+    },
+    //TODO: disable empty categories
+    categorySequence: function () {
+      let set = new Set();
+      for (let prop in this.products) {
+        set.add(this.products[prop].category)
+      }
+      this.categoryActual = Array.from(set)
+    },
   },
 
 }

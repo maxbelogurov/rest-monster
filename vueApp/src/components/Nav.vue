@@ -40,9 +40,6 @@
 export default {
   name: 'my-nav',
   props: ['category', 'cartCount'],
-  methods: {
-
-  }
 }
 </script>
 
