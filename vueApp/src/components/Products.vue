@@ -1,10 +1,9 @@
 <template>
   <div>
-    <my-header v-bind:title="restTitle"></my-header>
-    <my-nav v-bind:category="categoryActual"
-            v-bind:cartCount="cartItemsCount"></my-nav>
+    <my-header></my-header>
+    <my-nav></my-nav>
     <my-notifications ref="notification"></my-notifications>
-    <section v-for="value in categoryActual"
+    <section v-for="value in this.ACTUAL_CATEGORIES"
              :key="value.name"
              v-bind:id="value"
              class="container pt-2">
@@ -20,7 +19,7 @@
                 <p class="card-text description">{{ product.description | shortProductDescription }}</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="fs-6 text-primary text-primary">{{ product.price }} р.</span>
-                  <button v-on:click="addProductInCart(product.id, product.price)"
+                  <button v-on:click="addProdToCart(product, 1)"
                      class="btn btn-primary">Добавить</button>
                 </div>
               </div>
@@ -29,39 +28,34 @@
         </div>
     </section>
     <my-product-modal
-      v-on:add-prod-in-cart="addProductInCart"
       v-bind:product="productModal"></my-product-modal>
-    <my-cart-modal
-      v-on:change-prod-in-cart="changeCountProductInCart"
-      v-on:remove-product-in-cart="removeProductInCart"
-      v-bind:cart="cart"
-      v-bind:products="products"
-      v-bind:cartItemsCount="cartItemsCount"></my-cart-modal>
+    <my-cart-modal></my-cart-modal>
     <my-order-modal
-      v-on:clearCart="clearCart"
       v-bind:cart="cart"
-      v-bind:cartItemsCount="cartItemsCount"
-      v-bind:serverSetting="serverSetting">
-    </my-order-modal>
+      v-bind:cartItemsCount="cartItemsCount"></my-order-modal>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import {mapActions, mapGetters} from 'vuex'
 import MyHeader from './Header'
 import MyNav from './Nav'
 import MyProductModal from './modal/ProductModal'
 import MyCartModal from './modal/CartModal'
 import MyOrderModal from './modal/OrderModal'
 import MyNotifications from './addons/Notifications'
+
+
 import * as serv from '../assets/js/main'
 let servUrl = serv.settings.servUrl
 let userToken = serv.settings.userToken;
 let restId = serv.settings.restId;
+
 export default {
   name: "Products",
   data() {
     return {
-      restTitle: 'test',
       categorySequence: {},
       categoryActual: {},
       products: [],
@@ -78,28 +72,41 @@ export default {
   },
   components: { MyHeader, MyNav, MyProductModal, MyCartModal, MyOrderModal, MyNotifications },
   created() {
-    //TODO: get restaurant and menu data
-    Promise.all([
-      axios.get(servUrl + '/restaurants/' + restId),
-      axios.get(servUrl + '/menu-items/' + restId)
-    ]).then(([
-      restaurant,
-      menu
-    ]) => {
-      this.restTitle = restaurant.data.title;
-      this.restaurant = restaurant.data;
-      this.categorySequence = restaurant.data.settings.category_sequence;
-      this.products = menu.data;
-    })
+    // //TODO: get restaurant and menu data
+    // Promise.all([
+    //   axios.get(servUrl + '/restaurants/' + restId),
+    //   axios.get(servUrl + '/menu-items/' + restId)
+    // ]).then(([
+    //   restaurant,
+    //   menu
+    // ]) => {
+    //   this.restTitle = restaurant.data.title;
+    //   this.restaurant = restaurant.data;
+    //   this.categorySequence = restaurant.data.settings.category_sequence;
+    //   this.products = menu.data;
+    // })
     //TODO: loading cart from Local Storage
-    if (localStorage.userCart) {
-      this.cart = JSON.parse(localStorage.userCart)
-    }
+    // if (localStorage.userCart) {
+    //   this.cart = JSON.parse(localStorage.userCart)
+    // }
+  },
+  computed: {
+    ...mapGetters([
+      'RESTAURANT',
+      'PRODUCTS',
+      'ACTUAL_CATEGORIES',
+    ]),
   },
   methods: {
+    ...mapActions([
+      'GET_RESTAURANT_FROM_API',
+      'GET_PRODUCTS_FROM_API',
+      'ADD_TO_CART',
+      'ADD_CART_FROM_LS'
+    ]),
     //TODO: display products in their categories
     productsInCategory(category) {
-      return this.products.filter(function (prod) {
+      return this.PRODUCTS.filter(function (prod) {
         return prod.category === category && prod.is_available
       })
     },
@@ -108,7 +115,7 @@ export default {
     openProductModal(id) {
       let prodModalNow;
       let bsProductModal = new bootstrap.Modal(document.querySelector('#ProductModal'))
-      this.products.forEach(function (item) {
+      this.PRODUCTS.forEach(function (item) {
         if (item.id === id) { prodModalNow = item }
       })
       this.productModal = prodModalNow;
@@ -116,52 +123,31 @@ export default {
     },
 
     //TODO: add product id and count in Cart
-    addProductInCart(prod, price, count = 1) {
-      let itemAdded = false;
-      for (let key in this.cart) {
-        if(key === prod) {
-          this.cart[key].qty += count
-          itemAdded = true;
-        }
-      }
-      if (!itemAdded) {
-        let newObj = {id: prod, qty: count, price: price};
-        this.$set(this.cart, prod, newObj)
-      }
-      localStorage.userCart = JSON.stringify(this.cart);
+    addProdToCart(product, count) {
+      this.ADD_TO_CART({product, count});
 
       //TODO: notification this product
-      for (let key in this.products) {
-        if(this.products[key].id === prod) {
-          this.notification(this.products[key].title)
-        }
-      }
+      this.$refs.notification.sendNotification(product.title);
     },
-    notification(message) {
-      this.$refs.notification.sendNotification(message);
-    },
-    //TODO: change product count in Cart
-    changeCountProductInCart(prodId, count) {
-      if(this.cart[prodId].qty === 1 && count === -1) {
-        this.cart[prodId].qty = 1
-      } else {
-        this.cart[prodId].qty += count
-      }
-      localStorage.userCart = JSON.stringify(this.cart);
-    },
+    addProductInCart(prod, price, count = 1) {
+      // let itemAdded = false;
+      // for (let key in this.cart) {
+      //   if(key === prod) {
+      //     this.cart[key].qty += count
+      //     itemAdded = true;
+      //   }
+      // }
+      // if (!itemAdded) {
+      //   let newObj = {id: prod, qty: count, price: price};
+      //   this.$set(this.cart, prod, newObj)
+      // }
+      // localStorage.userCart = JSON.stringify(this.cart);
 
-    //TODO: remove product in Cart
-    removeProductInCart(id) {
-      this.$delete(this.cart, id)
-      localStorage.userCart = JSON.stringify(this.cart);
     },
-    //TODO: clear Cart
-    clearCart() {
-      for (let key in this.cart) {
-        delete this.cart[key]
-      }
-      this.cartItemsCount = 0;
-      localStorage.removeItem('userCart');
+  },
+  mounted() {
+    if (localStorage.userCart) {
+      this.ADD_CART_FROM_LS();
     }
   },
   filters: {
@@ -176,24 +162,24 @@ export default {
   watch: {
     cart: {
       //TODO: count all items in cart
-      handler() {
-        let items = JSON.parse(localStorage.userCart)
-        let countCart = 0
-        for(let key in items) {
-          countCart += items[key].qty
-        }
-        this.cartItemsCount = countCart
-      },
-      deep: true
+      // handler() {
+      //   let items = JSON.parse(localStorage.userCart)
+      //   let countCart = 0
+      //   for(let key in items) {
+      //     countCart += items[key].qty
+      //   }
+      //   this.cartItemsCount = countCart
+      // },
+      // deep: true
     },
-    //TODO: disable empty categories
-    categorySequence: function () {
-      let set = new Set();
-      for (let prop in this.products) {
-        set.add(this.products[prop].category)
-      }
-      this.categoryActual = Array.from(set)
-    },
+    // //TODO: disable empty categories
+    // categorySequence: function () {
+    //   let set = new Set();
+    //   for (let prop in this.products) {
+    //     set.add(this.products[prop].category)
+    //   }
+    //   this.categoryActual = Array.from(set)
+    // },
   },
 
 }

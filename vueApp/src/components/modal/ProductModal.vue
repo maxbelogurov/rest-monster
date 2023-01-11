@@ -33,7 +33,7 @@
                 <button @click="count++" class="btn btn-sm btn-outline-secondary">+</button>
               </div>
               <button
-                v-on:click="addProductInCart(product.id, product.price)"
+                v-on:click="addProdToCart(product)"
                 class="btn btn-primary">
                 <svg class="me-2" width="1.3rem" height="1.3rem" fill="white">
                   <use xlink:href="./static/ico/bootstrap-icons.svg#cart"/>
@@ -52,19 +52,22 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex';
 export default {
   name: "product-modal",
-  props: ["product", "cart"],
+  props: ["product"],
   data() {
     return {
-      prodId: '',
       count: 1,
     }
   },
   methods: {
-    addProductInCart(prod, price) {
-      this.prodId = prod
-      this.$emit('add-prod-in-cart', prod, price, this.count);
+    ...mapActions([
+      'ADD_TO_CART'
+    ]),
+    addProdToCart(product) {
+      const count = this.count
+      this.ADD_TO_CART({product, count});
       this.count = 1;
       this.closeProductModal();
     },

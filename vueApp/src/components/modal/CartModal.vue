@@ -2,18 +2,20 @@
   <div class="cart offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
     <div class="cart-header offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasCartLabel">
-        <span v-if="this.cartItemsCount === 0">Корзина пуста</span>
-        <span v-else>Товаров: {{ cartItemsCount }}</span>
+        <span v-if="this.CART_ITEM_COUNT === 0">Корзина пуста</span>
+        <span v-else>Товаров:
+          {{ this.CART_ITEM_COUNT }}
+        </span>
       </h5>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="cart-body offcanvas-body h-100 d-flex flex-column justify-content-between p-0">
-      <div v-show="this.cartItemsCount === 0"
+      <div v-show="this.CART_ITEM_COUNT === 0"
       class="cart-body__products h-100 text-center">
         <img src="/static/img/hommer_cart-bg.png" alt="Empty Cart" width="50%">
       </div>
       <transition-group name="product" tag="div" class="d-flex flex-column gap-3 cart-body__products">
-          <div v-for="product in productsInCart" :key="product.id"
+          <div v-for="product in this.CART" :key="product.id"
             class="row g-0 p-3 bg-white cart-body__products-item">
             <div class="col-3">
               <img class="img-fluid" src="/static/img/placeholder.jpg" alt="Говяжая страсть">
@@ -32,13 +34,15 @@
             <hr class="my-2">
             <div class="col-12 mt-0 d-flex justify-content-between align-items-center">
               <div>{{ product.price }} р.</div>
-              <div class="input-group">
+              <div class="input-group w-auto">
                 <button
-                  v-on:click="changeProductInCart(product.id, -1)"
+                  v-on:click="changeProductInCart(product, -1)"
                   class="btn btn-sm btn-outline-secondary">-</button>
-                <input type="number" v-bind:value="countProductItemInCart(product.id)" class="form-control form-control-sm text-center">
+<!--                <span class="input-group-text" v-text="actualItemInCart(product.id)"></span>-->
+                <span class="input-group-text py-0"> {{ product.qty }}</span>
+<!--                <input type="number" class="form-control form-control-sm text-center">-->
                 <button
-                  v-on:click="changeProductInCart(product.id, +1)"
+                  v-on:click="changeProductInCart(product, +1)"
                   class="btn btn-sm btn-outline-secondary">+</button>
               </div>
             </div>
@@ -50,11 +54,11 @@
             <p>Сумма заказа</p>
           </div>
           <div>
-            {{ sumProductsInCart }}
+            {{ this.CART_SUM_TOTAL }}
           </div>
         </div>
         <hr class="mb-3">
-        <button v-if="cartItemsCount === 0" class="btn btn-primary btn-lg" disabled>Оформить заказ</button>
+        <button v-if="this.CART_ITEM_COUNT === 0" class="btn btn-primary btn-lg" disabled>Оформить заказ</button>
         <button v-else type="button"
                 class="btn btn-primary btn-lg"
                 data-bs-dismiss="offcanvas"
@@ -66,38 +70,31 @@
 </template>
 
 <script>
+import {mapGetters, mapActions, mapMutations} from 'vuex'
 export default {
   name: "cart-modal",
-  props: ['cart', 'products', 'cartItemsCount'],
   computed: {
-    productsInCart: function () {
-      const thisCart = [];
-        for(let key in this.cart) {
-          for(let item in this.products) {
-            if (key === this.products[item].id) {
-              thisCart.push(this.products[item])
-            }
-          }
-        }
-      return thisCart
-    },
-    sumProductsInCart() {
-      let sum = 0;
-      for(let key in this.cart) {
-        sum += ( this.cart[key].qty * this.cart[key].price)
-      }
-      return +sum.toFixed(2) + ' р.'
-    }
+    ...mapGetters([
+      'CART_ITEM_COUNT',
+      'CART',
+      'PRODUCTS',
+      'CART_SUM_TOTAL',
+    ]),
   },
   methods: {
-    countProductItemInCart(prodId) {
-      return this.cart[prodId].qty
-    },
-    changeProductInCart(prod, count) {
-      this.$emit('change-prod-in-cart', prod, count);
+    ...mapActions([
+      'ADD_TO_CART',
+    ]),
+    ...mapMutations([
+      'DEL_PRODUCT_FROM_CART',
+      'COUNT_ITEM_TO_CART'
+    ]),
+    changeProductInCart(product, count) {
+      this.ADD_TO_CART({product, count});
     },
     removeProductInCart(id) {
-      this.$emit('remove-product-in-cart', id);
+      this.DEL_PRODUCT_FROM_CART(id);
+      this.COUNT_ITEM_TO_CART();
     },
     startOrder() {
       const bsCartModal = new bootstrap.Offcanvas(document.querySelector('#offcanvasCart'))

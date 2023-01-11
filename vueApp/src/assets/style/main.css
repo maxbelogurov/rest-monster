@@ -10,6 +10,8 @@ input:focus {
   position: absolute;
   width: 300px;
   right: 0;
+  display: flex;
+  flex-direction: column;
 }
 #alertPlaceholder .alert {
   margin-right: 12px;
@@ -20,10 +22,12 @@ input:focus {
 }
 .cart .delete-product-ico {
   opacity: 0.8;
+  transition: 0.2s;
   cursor: pointer;
 }
 .cart .delete-product-ico:hover {
-  opacity: 1;
+  transition: 0.2s;
+  fill: red;
 }
 
 .sticky-top {
@@ -51,9 +55,6 @@ input:focus {
   background-repeat: no-repeat;
 }
 
-.cart-body__products-item .input-group {
-  width: 100px;
-}
 .cart-body__products-item .input-group input::-webkit-outer-spin-button,
 .cart-body__products-item .input-group input::-webkit-inner-spin-button {
   -webkit-appearance: none;

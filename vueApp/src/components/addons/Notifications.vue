@@ -1,9 +1,9 @@
 <template>
   <div id="alertPlaceholder" class="container sticky-top">
     <transition-group name="alert" tag="div" class="notifications-box">
-      <div v-for="not in notifications" :key="not.message"
+      <div v-for="(item, index) in notifications" :key="item.message + index"
            class="alert alert-success py-2 px-3" role="alert">
-        {{ not.message }} <br>
+        {{ item.message }} <br>
         добавлен в корзину
       </div>
     </transition-group>
@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import Vue from "vue";
+
 export default {
   name: "my-notifications",
   data() {
@@ -18,23 +20,17 @@ export default {
       notifications: []
     }
   },
-  created() {
-
-  },
   methods: {
     sendNotification(message, type = 'alert-success') {
-      this.notifications.push( {message: message, type: type} )
+      let obj = {message: message, type: type}
+      this.notifications.splice(0, 0, obj)
       this.clearNotification()
     },
     clearNotification() {
       setTimeout(() => {
-        this.notifications.shift()
-      }, 1500)
+        this.notifications.splice(this.notifications.length - 1, 1 )
+      }, 700)
     },
-    notificationId(message) {
-      console.log(message.length * (Math.floor(Math.random() * 1000 )) )
-      return message.length * (Math.floor(Math.random() * 1000 ))
-    }
   }
 }
 </script>
@@ -42,11 +38,13 @@ export default {
 <style scoped>
 
   .alert-enter {
-    top: -50px;
+    top: -30px;
+    transform: scaleY(0);
     opacity: 0;
   }
   .alert-leave-to {
-    top: -50px;
+    top: -30px;
+    transform: scaleY(0);
     opacity: 0;
   }
   .alert-enter-to {
@@ -55,10 +53,11 @@ export default {
   }
   .alert-leave {
     opacity: 1;
-    top: 0px
+    top: 0px;
   }
   .alert-enter-active,
-  .alert-leave-to{
-    transition: all .3s ease;
+  .alert-leave-active,
+  .alert-leave-to {
+    transition: all .2s ease;
   }
 </style>

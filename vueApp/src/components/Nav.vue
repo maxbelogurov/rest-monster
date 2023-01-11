@@ -7,7 +7,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarProductCategory">
           <ul class="navbar-nav me-auto">
-            <li v-for="value in category"
+            <li v-for="value in this.ACTUAL_CATEGORIES"
                 :key="value.id"
                 class="nav-item">
               <a v-bind:href="'#' + value"
@@ -29,7 +29,8 @@
                          </svg>
                     </span>
           <span class="d-none d-md-inline">Корзина</span>
-          <span class="badge text-bg-danger">{{ cartCount }}</span>
+          <span v-text="this.CART_ITEM_COUNT"
+            class="badge text-bg-danger"></span>
         </button>
       </div>
     </div>
@@ -37,9 +38,15 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
   name: 'my-nav',
-  props: ['category', 'cartCount'],
+  computed: {
+    ...mapGetters([
+      'ACTUAL_CATEGORIES',
+      'CART_ITEM_COUNT',
+    ]),
+  }
 }
 </script>
 

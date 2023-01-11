@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Products from '@/components/Products'
 import Orders from '@/components/Orders'
+import store from '../vuex/store'
 
 Vue.use(Router)
 
